@@ -2,31 +2,39 @@
   "name": "my-ts-lib",
   "version": "0.0.0",
   "description": "My awesome typescript library",
+  "type": "module",
   "publishConfig": {
     "access": "public"
   },
   "files": [
     "dist"
   ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "exports": {
-    "require": "./dist/index.js",
-    "import": "./dist/index.mjs"
-  },
+  "exports": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build-fast": "tsup src/index.ts --format cjs,esm",
+    "build-fast": "tsup src/index.ts --format esm",
     "build": "pnpm run build-fast -- --dts-resolve",
+    "dev": "pnpm run build-fast --watch",
     "test": "vitest run",
     "prepublishOnly": "pnpm run build"
   },
   "license": "MIT",
   "devDependencies": {
     "@egoist/prettier-config": "1.0.0",
+    "@types/inquirer": "^9.0.3",
     "prettier": "2.8.4",
     "tsup": "6.6.3",
     "typescript": "4.9.5",
     "vitest": "0.28.5"
+  },
+  "dependencies": {
+    "@commander-js/extra-typings": "^11.0.0",
+    "@inquirer/prompts": "^3.0.0",
+    "@octokit/auth-oauth-device": "^6.0.0",
+    "@octokit/core": "^5.0.0",
+    "@octokit/types": "^11.1.0",
+    "chalk": "^5.3.0",
+    "commander": "^11.0.0",
+    "conf": "^11.0.2"
   }
 }
