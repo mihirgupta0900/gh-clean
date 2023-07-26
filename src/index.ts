@@ -1,12 +1,21 @@
 import { Command } from "@commander-js/extra-typings"
-import { createOAuthDeviceAuth } from "@octokit/auth-oauth-device"
+import { checkbox, confirm, select } from "@inquirer/prompts"
 import { Octokit } from "@octokit/core"
-import Conf from "conf"
-import { select, checkbox, confirm } from "@inquirer/prompts"
 import chalk from "chalk"
+import Conf from "conf"
+import { getGithubToken } from "./github.js"
+
+type ConfigProps = {
+  token: string
+  expiresAt: string
+  refreshToken: string
+  refreshTokenExpiresAt: string
+}
+
+export type Config = Conf<ConfigProps>
 
 const program = new Command()
-const config = new Conf({
+const config = new Conf<ConfigProps>({
   projectName: "gh-clean",
 })
 
@@ -20,37 +29,17 @@ program
   .description("Login to github")
   .option("-f, --force", "Force login")
   .action(async ({ force }) => {
-    if (!force && config.has("token")) {
-      console.log("Already logged in")
-      return
-    }
-
-    const auth = createOAuthDeviceAuth({
-      clientType: "github-app",
-      clientId: "Iv1.856e96ee86eb492f",
-      onVerification(verification) {
-        console.log("Open %s", verification.verification_uri)
-        console.log("Enter code: %s", verification.user_code)
-      },
-    })
-
-    const authResponse = await auth({
-      type: "oauth",
-    })
-    config.set("token", authResponse.token)
+    await getGithubToken(config, force)
   })
 
 program
   .command("repo")
   .description("Cleans github repos")
-  .action(async () => {
-    if (!config.has("token")) {
-      console.log("Please login first")
-      return
-    }
-
+  .option("-f, --force", "Force login")
+  .action(async ({ force }) => {
+    const token = await getGithubToken(config, force)
     const octokit = new Octokit({
-      auth: config.get("token"),
+      auth: token,
     })
 
     const visibility = await select({
@@ -101,10 +90,15 @@ program
     const selectedRepos = await checkbox({
       message: "Select repos",
       choices: repos.map((repo) => ({
-        name: repo.full_name,
+        name: repo.full_name + (repo.fork ? " (forked)" : ""),
         value: repo,
       })),
     })
+
+    if (selectedRepos.length === 0) {
+      console.log(chalk.yellow("⚠︎ No repos selected"))
+      return
+    }
 
     const action = await select({
       message: "Select an action",
@@ -135,8 +129,11 @@ program
           : "deleted:",
       ),
     )
+
+    console.log("")
+
     for (const repo of selectedRepos) {
-      console.log(chalk.blue(repo.full_name) + "\n")
+      console.log(chalk.blue(" • " + repo.full_name) + "\n")
     }
 
     const shouldGoAhead = await confirm({
@@ -148,6 +145,27 @@ program
     }
 
     console.log(chalk.blue("Processing..."))
+
+    for (const repo of selectedRepos) {
+      if (action === "private") {
+        await octokit.request("PATCH /repos/{owner}/{repo}", {
+          owner: repo.owner.login,
+          repo: repo.name,
+          private: true,
+        })
+      } else if (action === "archive") {
+        await octokit.request("PATCH /repos/{owner}/{repo}", {
+          owner: repo.owner.login,
+          repo: repo.name,
+          archived: true,
+        })
+      } else if (action === "delete") {
+        await octokit.request("DELETE /repos/{owner}/{repo}", {
+          owner: repo.owner.login,
+          repo: repo.name,
+        })
+      }
+    }
   })
 
 program.parse()
