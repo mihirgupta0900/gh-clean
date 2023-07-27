@@ -31,6 +31,7 @@
     "vitest": "0.28.5"
   },
   "dependencies": {
+    "@changesets/cli": "^2.26.2",
     "@commander-js/extra-typings": "^11.0.0",
     "@inquirer/prompts": "^3.0.0",
     "@octokit/auth-oauth-device": "^6.0.0",
