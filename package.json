@@ -1,7 +1,7 @@
 {
-  "name": "my-ts-lib",
-  "version": "0.0.0",
-  "description": "My awesome typescript library",
+  "name": "@mihir/gh-clean",
+  "version": "0.0.1",
+  "description": "CLI to clean up your github repos",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -9,6 +9,9 @@
   "files": [
     "dist"
   ],
+  "bin": {
+    "@mihir/gh-clean": "./dist/index.js"
+  },
   "exports": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
