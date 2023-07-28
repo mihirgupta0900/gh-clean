@@ -1,6 +1,6 @@
 {
   "name": "gh-clean",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "CLI to clean up your github repos",
   "type": "module",
   "publishConfig": {
