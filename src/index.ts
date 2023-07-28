@@ -134,7 +134,7 @@ program
       ),
     )
 
-    console.log("")
+    console.log("\n")
 
     for (const repo of selectedRepos) {
       console.log(chalk.blue(" • " + repo.full_name) + "\n")
