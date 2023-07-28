@@ -7,6 +7,8 @@ import chalk from "chalk"
 import Conf from "conf"
 import { getGithubToken } from "./github.js"
 
+import packageJson from "../package.json"
+
 type ConfigProps = {
   token: string
   expiresAt: string
@@ -22,9 +24,9 @@ const config = new Conf<ConfigProps>({
 })
 
 program
-  .name("gh-clean")
-  .description("CLI to cleanup repositories on github")
-  .version("0.0.1")
+  .name(packageJson.name)
+  .description(packageJson.description)
+  .version(packageJson.version)
 
 program
   .command("login")
