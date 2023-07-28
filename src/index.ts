@@ -112,6 +112,10 @@ program
           value: "private",
         },
         {
+          name: "Public",
+          value: "public",
+        },
+        {
           name: "Archive",
           value: "archive",
         },
@@ -130,11 +134,11 @@ program
           ? "made private:"
           : action === "archive"
           ? "archived:"
+          : action === "public"
+          ? "made public"
           : "deleted:",
       ),
     )
-
-    console.log("\n")
 
     for (const repo of selectedRepos) {
       console.log(chalk.blue(" • " + repo.full_name) + "\n")
@@ -167,6 +171,12 @@ program
         await octokit.request("DELETE /repos/{owner}/{repo}", {
           owner: repo.owner.login,
           repo: repo.name,
+        })
+      } else if (action === "public") {
+        await octokit.request("PATCH /repos/{owner}/{repo}", {
+          owner: repo.owner.login,
+          repo: repo.name,
+          private: false,
         })
       }
     }
