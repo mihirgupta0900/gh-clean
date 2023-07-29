@@ -1,5 +1,14 @@
 # gh-clean
 
+## 0.1.1
+
+### Patch Changes
+
+- 24c8193: fix: make executable
+
+  - adds shebang at the start of index.ts
+  - adds github linguist override
+
 ## 0.1.0
 
 ### Minor Changes
