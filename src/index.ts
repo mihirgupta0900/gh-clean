@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import { Command } from "@commander-js/extra-typings"
 import { checkbox, confirm, select } from "@inquirer/prompts"
 import { Octokit } from "@octokit/core"
