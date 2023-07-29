@@ -1,0 +1,3 @@
+# github/linguist override
+# https://github.com/github-linguist/linguist/blob/master/docs/overrides.md
+*.ts linguist-language=Typescript
