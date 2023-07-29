@@ -18,7 +18,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build-fast": "tsup src/index.ts --format esm",
-    "build": "pnpm run build-fast -- --dts",
+    "build": "pnpm run build-fast --dts",
     "dev": "pnpm run build-fast --watch",
     "test": "vitest run",
     "prepublishOnly": "pnpm run build",
@@ -26,6 +26,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@changesets/cli": "^2.26.2",
     "@egoist/prettier-config": "1.0.0",
     "@types/inquirer": "^9.0.3",
     "prettier": "2.8.4",
@@ -34,12 +35,10 @@
     "vitest": "0.28.5"
   },
   "dependencies": {
-    "@changesets/cli": "^2.26.2",
     "@commander-js/extra-typings": "^11.0.0",
     "@inquirer/prompts": "^3.0.0",
     "@octokit/auth-oauth-device": "^6.0.0",
     "@octokit/core": "^5.0.0",
-    "@octokit/types": "^11.1.0",
     "chalk": "^5.3.0",
     "commander": "^11.0.0",
     "conf": "^11.0.2"
