@@ -1,5 +1,15 @@
 # gh-clean
 
+## 0.1.2
+
+### Patch Changes
+
+- 2882dc6: fix: dts generation
+  chore: cleanup packges
+- 3530943: fix: use `.paginate` to get all repos
+  chore: adds octokit and removes @octokit/core
+  refactor: default sort by "created" date
+
 ## 0.1.1
 
 ### Patch Changes
