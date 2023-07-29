@@ -21,3 +21,11 @@ npm i -g gh-clean
 
 gh-clean repo
 ```
+
+### Force Login
+
+If your login is broken, or you want to login with a different account, you can force login by passing the `--force` flag.
+
+```bash
+npx gh-clean repo --force
+```
