@@ -2,12 +2,12 @@
 
 import { Command } from "@commander-js/extra-typings"
 import { checkbox, confirm, select } from "@inquirer/prompts"
-import { Octokit } from "@octokit/core"
 import chalk from "chalk"
 import Conf from "conf"
 import { getGithubToken } from "./github.js"
 
 import packageJson from "../package.json"
+import { Octokit } from "octokit"
 
 type ConfigProps = {
   token: string
@@ -84,12 +84,11 @@ program
 
     console.log(chalk.blue("Fetching repos..."))
 
-    const repos = await octokit
-      .request("GET /user/repos", {
-        visibility,
-        affiliation: affiliation.length > 0 ? affiliation.join(",") : undefined,
-      })
-      .then((res) => res.data)
+    const repos = await octokit.paginate("GET /user/repos", {
+      visibility,
+      affiliation: affiliation.length > 0 ? affiliation.join(",") : undefined,
+      sort: "created",
+    })
 
     const selectedRepos = await checkbox({
       message: "Select repos",

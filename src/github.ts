@@ -8,6 +8,7 @@ export const getGithubToken = async (config: Config, forceLogin = false) => {
     const auth = createOAuthDeviceAuth({
       clientType: "oauth-app",
       clientId: "253bf1663b6e79590714",
+      // TODO: make "delete_repo" optional
       scopes: ["repo", "delete_repo"],
       onVerification: (verification) => {
         console.log("Open %s", verification.verification_uri)
